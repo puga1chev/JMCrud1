@@ -1,9 +1,21 @@
 package jmCrud.model;
 
-public class User {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "users_orm")
+public class User implements Serializable {
+
+    @Id
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+    @Column(name = "username", unique = false, updatable = false)
     private String username;
+    @Column(name = "login", unique = true, updatable = false)
     private String login;
+    @Column(name = "pass", unique = false, updatable = false)
     private String pass;
 
     public User(String id, String username, String login, String pass) {
@@ -13,7 +25,7 @@ public class User {
         this.pass = pass;
     }
 
-
+//    @SuppressWarnings("UnusedDeclaration")
     public String getId() {
         return id;
     }

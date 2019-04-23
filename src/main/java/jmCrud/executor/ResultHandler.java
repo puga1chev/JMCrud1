@@ -1,4 +1,4 @@
-package jmCrud.dao.executor;
+package jmCrud.executor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

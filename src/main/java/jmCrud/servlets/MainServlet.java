@@ -1,7 +1,7 @@
 package jmCrud.servlets;
 
 import jmCrud.model.User;
-import jmCrud.service.UserServiceJDBC;
+import jmCrud.service.UserServiceJdbc;
 import javax.servlet.*;
 import javax.servlet.annotation.*;
 import javax.servlet.http.*;
@@ -12,14 +12,26 @@ import java.util.*;
 @WebServlet("/")
 public class MainServlet extends HttpServlet {
 
+    private UserServiceJdbc userServiceJdbc = new UserServiceJdbc();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // получаем список пользователей из БД
-        UserServiceJDBC userServiceJDBC = new UserServiceJDBC();
+        String deleteUser = req.getParameter("delete");
+        if (deleteUser != null) {
+
+            try {
+                userServiceJdbc.remove(deleteUser);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+//            resp.sendRedirect(req.getContextPath());
+        }
+
+        // get all users from db
         List<User> users = null;
         try {
-            users = userServiceJDBC.getAll();
+            users = userServiceJdbc.getAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,4 +40,5 @@ public class MainServlet extends HttpServlet {
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/index.jsp");
         requestDispatcher.forward(req, resp);
     }
+
 }

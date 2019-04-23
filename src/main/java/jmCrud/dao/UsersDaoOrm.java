@@ -4,11 +4,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 
-public class UsersDAOORM {
+public class UsersDaoOrm {
 
     private Session session;
 
-    public UsersDAOORM() {
+    public UsersDaoOrm() {
 
     }
 

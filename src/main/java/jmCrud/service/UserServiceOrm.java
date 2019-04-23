@@ -1,6 +1,6 @@
 package jmCrud.service;
 
-import jmCrud.model.UsersDataSet;
+import jmCrud.model.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,17 +9,17 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-public class UserServiceORM {
+public class UserServiceOrm {
     private static final String hibernate_show_sql = "true";
     private static final String hibernate_hbm2ddl_auto = "create";
 
-    private final SessionFactory sessionFactory;
+//    private final SessionFactory sessionFactory;
 
-    public UserServiceORM() {
-        Configuration configuration = getMySqlConfiguration();
-        sessionFactory = createSessionFactory(configuration);
+    public UserServiceOrm() {
+//        Configuration configuration = getMySqlConfiguration();
+//        sessionFactory = createSessionFactory(configuration);
     }
-
+/*
     @SuppressWarnings("UnusedDeclaration")
     private Configuration getMySqlConfiguration() {
         Configuration configuration = new Configuration();
@@ -33,13 +33,13 @@ public class UserServiceORM {
         configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
         configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
         return configuration;
-    }
+    }*/
 /*
 
     public UsersDataSet getUser(long id) throws DBException {
         try {
             Session session = sessionFactory.openSession();
-            UsersDAOJDBC dao = new UsersDAOJDBC(session);
+            UsersDaoJdbc dao = new UsersDaoJdbc(session);
             UsersDataSet dataSet = dao.get(id);
             session.close();
             return dataSet;
