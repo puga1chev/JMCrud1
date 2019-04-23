@@ -1,13 +1,13 @@
 package jmCrud.service;
 
-import jmCrud.dao.UsersDaoJdbc;
+import jmCrud.dao.*;
 import jmCrud.model.User;
 import java.sql.SQLException;
 import java.util.*;
 
-public class UserServiceJdbc {
+public class UserServiceJdbc implements UserServiceJdbcImpl {
 
-    private UsersDaoJdbc daoJdbc = new UsersDaoJdbc();
+    private UsersDaoJdbcImpl daoJdbc = new UsersDaoJdbc();
 
     public List<User> getAll() throws SQLException {
         return daoJdbc.getAll();

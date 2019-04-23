@@ -4,8 +4,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "users_orm")
+@Table(name = "users")
 public class User implements Serializable {
+
+    private static final long serialVersionUID = -8706689714326132798L;
 
     @Id
     @Column(name = "user_id")
@@ -18,6 +20,9 @@ public class User implements Serializable {
     @Column(name = "pass", unique = false, updatable = false)
     private String pass;
 
+    public User() {
+    }
+
     public User(String id, String username, String login, String pass) {
         this.id = id;
         this.username = username;
@@ -25,7 +30,7 @@ public class User implements Serializable {
         this.pass = pass;
     }
 
-//    @SuppressWarnings("UnusedDeclaration")
+    //    @SuppressWarnings("UnusedDeclaration")
     public String getId() {
         return id;
     }

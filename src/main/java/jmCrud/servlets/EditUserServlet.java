@@ -1,7 +1,7 @@
 package jmCrud.servlets;
 
 import jmCrud.model.User;
-import jmCrud.service.UserServiceJdbc;
+import jmCrud.service.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 @WebServlet("/edit")
 public class EditUserServlet extends HttpServlet {
 
-    private UserServiceJdbc userServiceJdbc = new UserServiceJdbc();
+    private UserServiceJdbcImpl userServiceJdbc = new UserServiceJdbc();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,9 +27,9 @@ public class EditUserServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        req.setAttribute("action", req.getContextPath() + "/edit");
         req.setAttribute("user", user);
 
-        req.setAttribute("action", "edit");
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/user_manage.jsp");
         requestDispatcher.forward(req, resp);
     }

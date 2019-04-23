@@ -2,24 +2,24 @@ package jmCrud.dao;
 
 import jmCrud.executor.Executor;
 import jmCrud.model.User;
-import jmCrud.util.JDBCConnection;
+import jmCrud.util.JdbcConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-public class UsersDaoJdbc {
+public class UsersDaoJdbc implements UsersDaoJdbcImpl {
 
     private final Executor executor;
     private final Connection connection;
 
     public UsersDaoJdbc() {
 
-        connection = JDBCConnection.getInstance();
+        connection = JdbcConnection.getInstance();
         executor = new Executor(connection);
     }
 
-    public void insert(User user) {
+    public void insert(User user) throws SQLException {
 
         try {
             connection.setAutoCommit(false);
@@ -73,7 +73,7 @@ public class UsersDaoJdbc {
         });
     }
 
-    public void update(User user)  {
+    public void update(User user) throws SQLException  {
 
         try {
             connection.setAutoCommit(false);
@@ -100,7 +100,7 @@ public class UsersDaoJdbc {
         }
     }
 
-    public void delete(String user_id) {
+    public void delete(String user_id) throws SQLException {
         try {
             connection.setAutoCommit(false);
             executor.execUpdate("DELETE FROM users WHERE user_id=" + user_id);

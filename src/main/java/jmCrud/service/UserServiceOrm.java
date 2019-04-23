@@ -1,42 +1,27 @@
 package jmCrud.service;
 
+import jmCrud.dao.UsersDaoOrm;
 import jmCrud.model.*;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-public class UserServiceOrm {
-    private static final String hibernate_show_sql = "true";
-    private static final String hibernate_hbm2ddl_auto = "create";
+import java.util.List;
 
-//    private final SessionFactory sessionFactory;
+public class UserServiceOrm {
+
+    private UsersDaoOrm usersDaoOrm = new UsersDaoOrm();
 
     public UserServiceOrm() {
-//        Configuration configuration = getMySqlConfiguration();
-//        sessionFactory = createSessionFactory(configuration);
     }
-/*
-    @SuppressWarnings("UnusedDeclaration")
-    private Configuration getMySqlConfiguration() {
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(UsersDataSet.class);
 
-        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/db_example");
-        configuration.setProperty("hibernate.connection.username", "tully");
-        configuration.setProperty("hibernate.connection.password", "tully");
-        configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
-        configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
-        return configuration;
-    }*/
-/*
+    public List<User> getAll() throws HibernateException {
 
-    public UsersDataSet getUser(long id) throws DBException {
+        return usersDaoOrm.getAll();
+    }
+
+/*    public UsersDataSet getUser(long id) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             UsersDaoJdbc dao = new UsersDaoJdbc(session);
@@ -46,8 +31,7 @@ public class UserServiceOrm {
         } catch (HibernateException e) {
             throw new DBException(e);
         }
-    }
-*/
+    }*/
 /*
 
     public void UpdateDB(UsersDAO dao) {

@@ -1,7 +1,11 @@
 package jmCrud.servlets;
 
 import jmCrud.model.User;
-import jmCrud.service.UserServiceJdbc;
+import jmCrud.service.*;
+import jmCrud.util.*;
+import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
+
 import javax.servlet.*;
 import javax.servlet.annotation.*;
 import javax.servlet.http.*;
@@ -12,7 +16,8 @@ import java.util.*;
 @WebServlet("/")
 public class MainServlet extends HttpServlet {
 
-    private UserServiceJdbc userServiceJdbc = new UserServiceJdbc();
+    private UserServiceJdbcImpl userServiceJdbc = new UserServiceJdbc();
+    private UserServiceOrm userServiceOrm = new UserServiceOrm();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,18 +30,19 @@ public class MainServlet extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-//            resp.sendRedirect(req.getContextPath());
         }
 
         // get all users from db
         List<User> users = null;
         try {
-            users = userServiceJdbc.getAll();
-        } catch (SQLException e) {
+            users = userServiceOrm.getAll();
+        }/* catch (SQLException e) {
+            e.printStackTrace();
+        } */ catch (HibernateException e) {
             e.printStackTrace();
         }
 
-        req.setAttribute("Users", users);
+        req.setAttribute("users", users);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/index.jsp");
         requestDispatcher.forward(req, resp);
     }

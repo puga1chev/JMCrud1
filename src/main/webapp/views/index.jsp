@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.*" %>
-<%@ page import="jmCrud.model.User" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 
 <html>
 <head>
@@ -19,28 +19,25 @@
         <th scope="col">Id</th>
         <th scope="col">Имя пользователя</th>
         <th scope="col">Логин</th>
-        <th scope="col">Редактировать</th>
-        <th scope="col">Удалить</th>
+        <th scope="col">Редактирование</th>
+        <th scope="col">Удаление</th>
     </tr>
     </thead>
     <tbody>
-    <%
-        ArrayList<User> users = (ArrayList<User>) request.getAttribute("Users");
-        for (User user : users) {
-    %>
+
+    <c:forEach items="${users}" var="user">
     <tr>
-        <th><%= user.getId() %>
+        <th><c:out value="${user.getId()}"/>
         </th>
-        <th><%= user.getUsername() %>
+        <th><c:out value="${user.getUsername()}"/>
         </th>
-        <th><%= user.getLogin() %>
+        <th><c:out value="${user.getLogin()}"/>
         </th>
-        <th><a href="edit?id=<%= user.getId() %>">Редакт.</a></th>
-        <th><a href="?delete=<%= user.getId() %>">Удалить</a></th>
+        <th><a href="edit?id=<c:out value="${user.getId()}"/>">Редакт.</a></th>
+        <th><a href="?delete=<c:out value="${user.getId()}"/>">Удалить</a></th>
     </tr>
-    <%
-        }
-    %>
+    </c:forEach>
+
     </tbody>
 </table>
 <a class="btn btn-primary" href="add">Добавить</a>

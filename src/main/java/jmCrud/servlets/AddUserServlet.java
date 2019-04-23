@@ -1,7 +1,7 @@
 package jmCrud.servlets;
 
 import jmCrud.model.User;
-import jmCrud.service.UserServiceJdbc;
+import jmCrud.service.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,12 +15,12 @@ import java.sql.SQLException;
 @WebServlet("/add")
 public class AddUserServlet extends HttpServlet {
 
-    private UserServiceJdbc userServiceJdbc = new UserServiceJdbc();
+    private UserServiceJdbcImpl userServiceJdbc = new UserServiceJdbc();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.setAttribute("action", "add");
+        req.setAttribute("action", req.getContextPath() + "/add");
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/user_manage.jsp");
         requestDispatcher.forward(req, resp);
     }
