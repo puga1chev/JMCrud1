@@ -19,6 +19,7 @@ public class UsersDAOJDBC {
         executor = new Executor(connection);
     }
 
+    //
     public void insert(User user)  {
 
         try {
