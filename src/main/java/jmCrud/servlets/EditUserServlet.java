@@ -14,7 +14,7 @@ import java.io.IOException;
 public class EditUserServlet extends HttpServlet {
 
     private UserServiceJdbcImpl userServiceJdbc = new UserServiceJdbc();
-    private UserServiceOrm userServiceOrm = new UserServiceOrm();
+    private UserServiceOrmImpl userServiceOrm = new UserServiceOrm();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
