@@ -3,19 +3,18 @@ package jmCrud.servlets;
 import jmCrud.model.User;
 import jmCrud.service.*;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/edit")
 public class EditUserServlet extends HttpServlet {
 
     private UserServiceJdbcImpl userServiceJdbc = new UserServiceJdbc();
+    private UserServiceOrm userServiceOrm = new UserServiceOrm();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,8 +22,8 @@ public class EditUserServlet extends HttpServlet {
         String user_id = req.getParameter("id");
         User user = null;
         try {
-            user = userServiceJdbc.getById(user_id);
-        } catch (SQLException e) {
+            user = userServiceOrm.getById(Long.parseLong(user_id));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         req.setAttribute("action", req.getContextPath() + "/edit");
@@ -37,16 +36,17 @@ public class EditUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        req.setCharacterEncoding("UTF-8");
         User newUser = new User(
-                req.getParameter("user_id"),
+                Long.parseLong(req.getParameter("user_id")),
                 req.getParameter("username"),
                 req.getParameter("login"),
                 req.getParameter("password")
         );
 
         try {
-            userServiceJdbc.edit(newUser);
-        } catch (SQLException e) {
+            userServiceOrm.edit(newUser);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

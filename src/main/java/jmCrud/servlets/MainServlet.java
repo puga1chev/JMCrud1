@@ -2,15 +2,11 @@ package jmCrud.servlets;
 
 import jmCrud.model.User;
 import jmCrud.service.*;
-import jmCrud.util.*;
-import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
 
 import javax.servlet.*;
 import javax.servlet.annotation.*;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 
 @WebServlet("/")
@@ -26,8 +22,8 @@ public class MainServlet extends HttpServlet {
         if (deleteUser != null) {
 
             try {
-                userServiceJdbc.remove(deleteUser);
-            } catch (SQLException e) {
+                userServiceOrm.remove(Long.parseLong(deleteUser));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -36,9 +32,7 @@ public class MainServlet extends HttpServlet {
         List<User> users = null;
         try {
             users = userServiceOrm.getAll();
-        }/* catch (SQLException e) {
-            e.printStackTrace();
-        } */ catch (HibernateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/add")
 public class AddUserServlet extends HttpServlet {
 
     private UserServiceJdbcImpl userServiceJdbc = new UserServiceJdbc();
+    private UserServiceOrm userServiceOrm = new UserServiceOrm();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,16 +28,17 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        req.setCharacterEncoding("UTF-8");
         User currentUser = new User(
-                "",
+                0L,
                 req.getParameter("username"),
                 req.getParameter("login"),
                 req.getParameter("password")
         );
 
         try {
-            userServiceJdbc.add(currentUser);
-        } catch (SQLException e) {
+            userServiceOrm.add(currentUser);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

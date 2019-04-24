@@ -9,23 +9,28 @@ public class UserServiceJdbc implements UserServiceJdbcImpl {
 
     private UsersDaoJdbcImpl daoJdbc = new UsersDaoJdbc();
 
+    @Override
     public List<User> getAll() throws SQLException {
         return daoJdbc.getAll();
     }
 
-    public User getById(String user_id) throws SQLException {
+    @Override
+    public User getById(Long user_id) throws SQLException {
         return daoJdbc.getById(user_id);
     }
 
+    @Override
     public void add(User user) throws SQLException {
         daoJdbc.insert(user);
     }
 
+    @Override
     public void edit(User user) throws SQLException {
         daoJdbc.update(user);
     }
 
-    public void remove(String id) throws SQLException {
+    @Override
+    public void remove(Long id) throws SQLException {
         daoJdbc.delete(id);
     }
 }

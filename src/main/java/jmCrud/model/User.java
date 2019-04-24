@@ -12,18 +12,18 @@ public class User implements Serializable {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-    @Column(name = "username", unique = false, updatable = false)
+    private Long id;
+    @Column(name = "username", unique = false, updatable = true)
     private String username;
-    @Column(name = "login", unique = true, updatable = false)
+    @Column(name = "login", unique = false, updatable = true)
     private String login;
-    @Column(name = "pass", unique = false, updatable = false)
+    @Column(name = "pass", unique = false, updatable = true)
     private String pass;
 
     public User() {
     }
 
-    public User(String id, String username, String login, String pass) {
+    public User(Long id, String username, String login, String pass) {
         this.id = id;
         this.username = username;
         this.login = login;
@@ -31,7 +31,7 @@ public class User implements Serializable {
     }
 
     //    @SuppressWarnings("UnusedDeclaration")
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

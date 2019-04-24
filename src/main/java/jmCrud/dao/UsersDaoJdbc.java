@@ -19,6 +19,7 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
         executor = new Executor(connection);
     }
 
+    @Override
     public void insert(User user) throws SQLException {
 
         try {
@@ -42,12 +43,13 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
         }
     }
 
+    @Override
     public List<User> getAll() throws SQLException {
         return executor.execQuery("select * from users", result -> {
             List<User> users = new ArrayList<>();
             while (result.next()) {
                 users.add(new User(
-                        result.getString("user_id"),
+                        result.getLong("user_id"),
                         result.getString("username"),
                         result.getString("login"),
                         result.getString("pass")
@@ -57,13 +59,14 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
         });
     }
 
-    public User getById(String user_id) throws SQLException {
+    @Override
+    public User getById(Long user_id) throws SQLException {
         return executor.execQuery("select * from users where user_id=" + user_id, result -> {
             User users = null;
             if (result.next()) {
 
                 users = new User(
-                        result.getString("user_id"),
+                        result.getLong("user_id"),
                         result.getString("username"),
                         result.getString("login"),
                         result.getString("pass")
@@ -73,6 +76,7 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
         });
     }
 
+    @Override
     public void update(User user) throws SQLException  {
 
         try {
@@ -100,7 +104,8 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
         }
     }
 
-    public void delete(String user_id) throws SQLException {
+    @Override
+    public void delete(Long user_id) throws SQLException {
         try {
             connection.setAutoCommit(false);
             executor.execUpdate("DELETE FROM users WHERE user_id=" + user_id);
@@ -121,5 +126,4 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
             }
         }
     }
-
 }
