@@ -13,6 +13,12 @@
 </head>
 <body>
 
+<%--<c:if test = "${exception != null}">
+    <c:forEach items="${exception}" var="element">
+        <c:out value="${element}" />
+    </c:forEach>
+</c:if>--%>
+
 <table class="table">
     <thead class="thead-light">
     <tr>
@@ -24,7 +30,6 @@
     </tr>
     </thead>
     <tbody>
-
     <c:forEach items="${users}" var="user">
     <tr>
         <th><c:out value="${user.getId()}"/>
@@ -34,7 +39,7 @@
         <th><c:out value="${user.getLogin()}"/>
         </th>
         <th><a href="edit?id=<c:out value="${user.getId()}"/>">Редакт.</a></th>
-        <th><a href="?delete=<c:out value="${user.getId()}"/>">Удалить</a></th>
+        <th><a href="delete?id=<c:out value="${user.getId()}"/>">Удалить</a></th>
     </tr>
     </c:forEach>
 

@@ -1,5 +1,6 @@
 package jmCrud.dao;
 
+import jmCrud.exception.DBException;
 import jmCrud.executor.Executor;
 import jmCrud.model.User;
 import jmCrud.util.JdbcConnection;
@@ -8,10 +9,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-public class UsersDaoJdbc implements UsersDaoJdbcImpl {
+public class UsersDaoJdbc implements UsersDaoDB {
 
     private final Executor executor;
     private final Connection connection;
+    private final String autoCommitErrorText = "Ошибка при попытке включить автокоммит";
 
     public UsersDaoJdbc() {
 
@@ -20,7 +22,7 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
     }
 
     @Override
-    public void insert(User user) throws SQLException {
+    public void insert(User user) throws DBException {
 
         try {
             connection.setAutoCommit(false);
@@ -33,51 +35,62 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Ошибка при попытке добавить запись в таблицу", e);
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DBException(autoCommitErrorText, e);
             }
         }
     }
 
     @Override
-    public List<User> getAll() throws SQLException {
-        return executor.execQuery("select * from users", result -> {
-            List<User> users = new ArrayList<>();
-            while (result.next()) {
-                users.add(new User(
-                        result.getLong("user_id"),
-                        result.getString("username"),
-                        result.getString("login"),
-                        result.getString("pass")
-                ));
-            }
-            return users;
-        });
+    public List<User> getAll() throws DBException {
+        try {
+            executor.execQuery("select * from users", result -> {
+                List<User> users = new ArrayList<>();
+                while (result.next()) {
+                    users.add(new User(
+                            result.getLong("user_id"),
+                            result.getString("username"),
+                            result.getString("login"),
+                            result.getString("pass")
+                    ));
+                }
+                return users;
+            });
+        } catch (SQLException e) {
+            throw new DBException("Ошибка при извлечении всех пользователей из БД", e);
+        }
+
+        return null;
     }
 
     @Override
-    public User getById(Long user_id) throws SQLException {
-        return executor.execQuery("select * from users where user_id=" + user_id, result -> {
-            User users = null;
-            if (result.next()) {
+    public User getById(Long user_id) throws DBException {
+        try {
+            executor.execQuery("select * from users where user_id=" + user_id, result -> {
+                User users = null;
+                if (result.next()) {
 
-                users = new User(
-                        result.getLong("user_id"),
-                        result.getString("username"),
-                        result.getString("login"),
-                        result.getString("pass")
-                );
-            }
-            return users;
-        });
+                    users = new User(
+                            result.getLong("user_id"),
+                            result.getString("username"),
+                            result.getString("login"),
+                            result.getString("pass")
+                    );
+                }
+                return users;
+            });
+        } catch (SQLException e) {
+            throw new DBException("Ошибка при получении пользователя из БД", e);
+        }
+        return null;
     }
 
     @Override
-    public void update(User user) throws SQLException  {
+    public void update(User user) throws DBException  {
 
         try {
             connection.setAutoCommit(false);
@@ -90,22 +103,22 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
             try {
                 connection.rollback();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DBException("Ошибка при откате изменений", e);
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DBException("Ошибка при попытке обность данные пользователя", e);
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DBException(autoCommitErrorText, e);
             }
         }
     }
 
     @Override
-    public void delete(Long user_id) throws SQLException {
+    public void delete(Long user_id) throws DBException {
         try {
             connection.setAutoCommit(false);
             executor.execUpdate("DELETE FROM users WHERE user_id=" + user_id);
@@ -122,7 +135,7 @@ public class UsersDaoJdbc implements UsersDaoJdbcImpl {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new DBException(autoCommitErrorText, e);
             }
         }
     }

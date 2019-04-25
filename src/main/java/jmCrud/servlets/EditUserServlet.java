@@ -5,16 +5,13 @@ import jmCrud.service.*;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/edit")
 public class EditUserServlet extends HttpServlet {
 
-    private UserServiceJdbcImpl userServiceJdbc = new UserServiceJdbc();
-    private UserServiceOrmImpl userServiceOrm = new UserServiceOrm();
+    private UserServiceDB userService = new UserServiceOrm();// = new UserServiceJdbc();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -22,7 +19,7 @@ public class EditUserServlet extends HttpServlet {
         String user_id = req.getParameter("id");
         User user = null;
         try {
-            user = userServiceOrm.getById(Long.parseLong(user_id));
+            user = userService.getById(Long.parseLong(user_id));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,7 +42,7 @@ public class EditUserServlet extends HttpServlet {
         );
 
         try {
-            userServiceOrm.edit(newUser);
+            userService.edit(newUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,12 +50,12 @@ public class EditUserServlet extends HttpServlet {
         resp.sendRedirect(req.getContextPath());
     }
 
-    private String[] parsePath(String path) {
+/*    private String[] parsePath(String path) {
 
         if (path == null || path.isEmpty()) {
             return null;
         }
         String[] array = path.split("/");
         return array;
-    }
+    }*/
 }
