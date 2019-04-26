@@ -11,18 +11,14 @@ import java.io.IOException;
 @WebServlet("/edit")
 public class EditUserServlet extends HttpServlet {
 
-    private UserServiceDB userService = new UserServiceOrm();// = new UserServiceJdbc();
+    private UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String user_id = req.getParameter("id");
-        User user = null;
-        try {
-            user = userService.getById(Long.parseLong(user_id));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        User user = userService.getById(Long.parseLong(user_id));
+
         req.setAttribute("action", req.getContextPath() + "/edit");
         req.setAttribute("user", user);
 
@@ -41,12 +37,7 @@ public class EditUserServlet extends HttpServlet {
                 req.getParameter("password")
         );
 
-        try {
-            userService.edit(newUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        userService.edit(newUser);
         resp.sendRedirect(req.getContextPath());
     }
 

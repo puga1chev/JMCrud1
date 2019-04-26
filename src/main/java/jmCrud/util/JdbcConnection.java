@@ -1,10 +1,13 @@
 package jmCrud.util;
 
+import org.apache.log4j.Logger;
+
 import java.sql.*;
 
 public class JdbcConnection {
 
     private static Connection instastance = null;
+    final static Logger logger = Logger.getLogger(JdbcConnection.class);
 
     public static Connection getInstance() {
         if (instastance == null) {
@@ -34,7 +37,7 @@ public class JdbcConnection {
             return connection;
 
         } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("Ошибка подключения к базе данных", e);
         }
         return null;
     }

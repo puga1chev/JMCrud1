@@ -1,23 +1,21 @@
 package jmCrud.dao;
 
-import jmCrud.exception.DBException;
 import jmCrud.model.User;
 import jmCrud.util.HibernateUtil;
+import org.apache.log4j.Logger;
 import org.hibernate.*;
 
 import javax.persistence.criteria.*;
 import java.util.*;
 
 
-public class UsersDaoOrm implements UsersDaoDB {
+public class UserDaoHibernateImpl implements UsersDao {
 
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
-    public UsersDaoOrm() {
-    }
+    final static Logger logger = Logger.getLogger(UserDaoHibernateImpl.class);
 
     @Override
-    public void insert(User user) throws DBException {
+    public void insert(User user) {
 
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
@@ -25,28 +23,28 @@ public class UsersDaoOrm implements UsersDaoDB {
             session.save(user);
             transaction.commit();
         } catch (HibernateException e) {
-            throw new DBException("Ошибка при попытке добавления пользователя в БД", e);
+            logger.error("Ошибка при попытке добавления пользователя в БД", e);
         }
     }
 
     @Override
-    public void update(User user) throws DBException {
+    public void update(User user) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.saveOrUpdate(user);
             transaction.commit();
         } catch (HibernateException e) {
-            throw new DBException("Ошибка при обновлении пользователя в БД", e);
+            logger.error("Ошибка при обновлении пользователя в БД", e);
         }
     }
 
     @Override
-    public void delete(Long user_id) throws DBException {
+    public void delete(Long user_id) {
 
         User userDel = getById(user_id);
         if (userDel == null) {
-            throw new IllegalArgumentException("Пользователь с id " + user_id + " не найден!");
+            logger.error("Пользователь с id " + user_id + " не найден!");
         }
 
         Transaction transaction = null;
@@ -55,12 +53,12 @@ public class UsersDaoOrm implements UsersDaoDB {
             session.delete(userDel);
             transaction.commit();
         } catch (HibernateException e) {
-            throw new DBException("Ошибка при попытке удалить пользователя из БД", e);
+            logger.error("Ошибка при попытке удалить пользователя из БД", e);
         }
     }
 
     @Override
-    public User getById(Long user_id) throws DBException {
+    public User getById(Long user_id) {
 
         User user = null;
         Transaction transaction = null;
@@ -73,12 +71,12 @@ public class UsersDaoOrm implements UsersDaoDB {
             user = session.createQuery(criteria).getSingleResult();
             transaction.commit();
         } catch (Exception e) {
-            throw new DBException("Ошибка при попытке получить пользователя из БД", e);
+            logger.error("Ошибка при попытке получить пользователя из БД", e);
         }
         return user;
     }
 
-    public List<User> getAll() throws DBException {
+    public List<User> getAll() {
 
         List<User> users = null;
         Transaction transaction = null;
@@ -92,7 +90,7 @@ public class UsersDaoOrm implements UsersDaoDB {
             users = session.createQuery(criteria).getResultList();
             transaction.commit();
         } catch (Exception e) {
-            throw new DBException("Ошибка при попытке получить всех пользователей из БД", e);
+            logger.error("Ошибка при попытке получить всех пользователей из БД", e);
         }
         return users;
     }

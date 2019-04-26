@@ -12,7 +12,7 @@ import java.io.IOException;
 @WebServlet("/add")
 public class AddUserServlet extends HttpServlet {
 
-    private UserServiceDB userService = new UserServiceOrm();// = new UserServiceJdbc();
+    private UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,12 +32,7 @@ public class AddUserServlet extends HttpServlet {
                 req.getParameter("login"),
                 req.getParameter("password")
         );
-
-        try {
-            userService.add(currentUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        userService.add(currentUser);
 
         resp.sendRedirect(req.getContextPath());
     }

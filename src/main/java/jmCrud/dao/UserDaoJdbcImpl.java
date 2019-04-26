@@ -1,28 +1,29 @@
 package jmCrud.dao;
 
-import jmCrud.exception.DBException;
 import jmCrud.executor.Executor;
 import jmCrud.model.User;
 import jmCrud.util.JdbcConnection;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-public class UsersDaoJdbc implements UsersDaoDB {
+public class UserDaoJdbcImpl implements UsersDao {
 
     private final Executor executor;
     private final Connection connection;
     private final String autoCommitErrorText = "Ошибка при попытке включить автокоммит";
+    final static Logger logger = Logger.getLogger(UserDaoJdbcImpl.class);
 
-    public UsersDaoJdbc() {
+    public UserDaoJdbcImpl() {
 
         connection = JdbcConnection.getInstance();
         executor = new Executor(connection);
     }
 
     @Override
-    public void insert(User user) throws DBException {
+    public void insert(User user) {
 
         try {
             connection.setAutoCommit(false);
@@ -31,22 +32,22 @@ public class UsersDaoJdbc implements UsersDaoDB {
             try {
                 connection.rollback();
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Ошибка при попытке откатить запись в таблицу", e);
             }
 
         } catch (SQLException e) {
-            throw new DBException("Ошибка при попытке добавить запись в таблицу", e);
+            logger.error("Ошибка при попытке добавить запись в таблицу", e);
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                throw new DBException(autoCommitErrorText, e);
+                logger.error(autoCommitErrorText, e);
             }
         }
     }
 
     @Override
-    public List<User> getAll() throws DBException {
+    public List<User> getAll() {
         try {
             executor.execQuery("select * from users", result -> {
                 List<User> users = new ArrayList<>();
@@ -61,14 +62,14 @@ public class UsersDaoJdbc implements UsersDaoDB {
                 return users;
             });
         } catch (SQLException e) {
-            throw new DBException("Ошибка при извлечении всех пользователей из БД", e);
+            logger.error("Ошибка при извлечении всех пользователей из БД", e);
         }
 
         return null;
     }
 
     @Override
-    public User getById(Long user_id) throws DBException {
+    public User getById(Long user_id) {
         try {
             executor.execQuery("select * from users where user_id=" + user_id, result -> {
                 User users = null;
@@ -84,13 +85,13 @@ public class UsersDaoJdbc implements UsersDaoDB {
                 return users;
             });
         } catch (SQLException e) {
-            throw new DBException("Ошибка при получении пользователя из БД", e);
+            logger.error("Ошибка при получении пользователя из БД", e);
         }
         return null;
     }
 
     @Override
-    public void update(User user) throws DBException  {
+    public void update(User user)  {
 
         try {
             connection.setAutoCommit(false);
@@ -103,22 +104,22 @@ public class UsersDaoJdbc implements UsersDaoDB {
             try {
                 connection.rollback();
             } catch (SQLException e) {
-                throw new DBException("Ошибка при откате изменений", e);
+                logger.error("Ошибка при откате изменений", e);
             }
 
         } catch (SQLException e) {
-            throw new DBException("Ошибка при попытке обность данные пользователя", e);
+            logger.error("Ошибка при попытке обность данные пользователя", e);
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                throw new DBException(autoCommitErrorText, e);
+                logger.error(autoCommitErrorText, e);
             }
         }
     }
 
     @Override
-    public void delete(Long user_id) throws DBException {
+    public void delete(Long user_id) {
         try {
             connection.setAutoCommit(false);
             executor.execUpdate("DELETE FROM users WHERE user_id=" + user_id);
@@ -126,16 +127,16 @@ public class UsersDaoJdbc implements UsersDaoDB {
             try {
                 connection.rollback();
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Ошибка при попытке откатить транзакцию удаления пользователя", e);
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Ошибка при попытке удалить пользователя", e);
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                throw new DBException(autoCommitErrorText, e);
+                logger.error(autoCommitErrorText, e);
             }
         }
     }

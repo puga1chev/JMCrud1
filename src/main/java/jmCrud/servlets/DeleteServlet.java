@@ -1,9 +1,6 @@
 package jmCrud.servlets;
 
-import jmCrud.model.User;
-import jmCrud.service.UserServiceDB;
-import jmCrud.service.UserServiceOrm;
-
+import jmCrud.service.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,28 +8,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
 
-    private UserServiceDB userService = new UserServiceOrm();// = new UserServiceJdbc();
+    private UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String deleteUser = req.getParameter("id");
         if (deleteUser != null) {
-
-            try {
-                userService.remove(Long.parseLong(deleteUser));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            userService.remove(Long.parseLong(deleteUser));
         }
 
-        req.setAttribute("action", req.getContextPath() + "/");
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/user_delete.jsp");
+//        req.setAttribute("action", req.getContextPath() + "/");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/index.jsp");
         requestDispatcher.forward(req, resp);
     }
 }
