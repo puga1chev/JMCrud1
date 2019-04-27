@@ -1,13 +1,10 @@
 package jmCrud.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
-
-    private static final long serialVersionUID = -8706689714326132798L;
+public class User {
 
     @Id
     @Column(name = "user_id")
@@ -15,22 +12,25 @@ public class User implements Serializable {
     private Long id;
     @Column(name = "username", unique = false, updatable = true)
     private String username;
-    @Column(name = "login", unique = false, updatable = true)
+    @Column(name = "login", unique = true, updatable = true)
     private String login;
     @Column(name = "pass", unique = false, updatable = true)
     private String pass;
+    @ManyToOne
+    @JoinColumn(name = "role_id", unique = false, updatable = true)
+    private Role role;
 
     public User() {
     }
 
-    public User(Long id, String username, String login, String pass) {
+    public User(Long id, String username, String login, String pass, Role role) {
         this.id = id;
         this.username = username;
         this.login = login;
         this.pass = pass;
+        this.role = role;
     }
 
-    //    @SuppressWarnings("UnusedDeclaration")
     public Long getId() {
         return id;
     }
@@ -57,5 +57,13 @@ public class User implements Serializable {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

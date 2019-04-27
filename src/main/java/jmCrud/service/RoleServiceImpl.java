@@ -1,26 +1,26 @@
 package jmCrud.service;
 
 import jmCrud.dao.*;
-import jmCrud.model.User;
+import jmCrud.model.*;
 import java.util.*;
 
-public class UserServiceImpl implements ObjectService<User> {
+public class RoleServiceImpl implements ObjectService<Role> {
 
     private DaoAbstractFactory factory = DaoFactoryHelper.getInstance().getFactory();
-    private BaseDaoOperations<User> dao = factory.getUsersDao();
+    private BaseDaoOperations<Role> dao = factory.getRoleDao();
 
     @Override
-    public List<User> getAll(String orderByField) {
+    public List<Role> getAll(String orderByField) {
         return dao.getAll(orderByField);
     }
 
     @Override
-    public void insert(User obj) {
+    public void insert(Role obj) {
         dao.insert(obj);
     }
 
     @Override
-    public void update(User obj) {
+    public void update(Role obj) {
         dao.update(obj);
     }
 
@@ -30,12 +30,12 @@ public class UserServiceImpl implements ObjectService<User> {
     }
 
     @Override
-    public User getById(Long id) {
+    public Role getById(Long id) {
         return dao.getById(id);
     }
 
     @Override
-    public User getByField(String fieldName, String value) {
+    public Role getByField(String fieldName, String value) {
         return dao.getByField(fieldName, value);
     }
 }

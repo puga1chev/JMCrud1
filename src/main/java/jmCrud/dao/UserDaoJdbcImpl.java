@@ -1,15 +1,14 @@
 package jmCrud.dao;
 
 import jmCrud.executor.Executor;
-import jmCrud.model.User;
-import jmCrud.util.JdbcConnection;
+import jmCrud.model.*;
+import jmCrud.util.DbHelper;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
-public class UserDaoJdbcImpl implements UsersDao {
+public class UserDaoJdbcImpl implements BaseDaoOperations<User> {
 
     private final Executor executor;
     private final Connection connection;
@@ -18,7 +17,7 @@ public class UserDaoJdbcImpl implements UsersDao {
 
     public UserDaoJdbcImpl() {
 
-        connection = JdbcConnection.getInstance();
+        connection = DbHelper.getPostgresConnection();
         executor = new Executor(connection);
     }
 
@@ -47,7 +46,7 @@ public class UserDaoJdbcImpl implements UsersDao {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAll(String orderByField) {
         try {
             executor.execQuery("select * from users", result -> {
                 List<User> users = new ArrayList<>();
@@ -56,7 +55,8 @@ public class UserDaoJdbcImpl implements UsersDao {
                             result.getLong("user_id"),
                             result.getString("username"),
                             result.getString("login"),
-                            result.getString("pass")
+                            result.getString("pass"),
+                            new Role()
                     ));
                 }
                 return users;
@@ -79,7 +79,8 @@ public class UserDaoJdbcImpl implements UsersDao {
                             result.getLong("user_id"),
                             result.getString("username"),
                             result.getString("login"),
-                            result.getString("pass")
+                            result.getString("pass"),
+                            new Role()
                     );
                 }
                 return users;
@@ -87,6 +88,11 @@ public class UserDaoJdbcImpl implements UsersDao {
         } catch (SQLException e) {
             logger.error("Ошибка при получении пользователя из БД", e);
         }
+        return null;
+    }
+
+    @Override
+    public User getByField(String fieldName, String value) {
         return null;
     }
 

@@ -1,5 +1,6 @@
 package jmCrud.servlets;
 
+import jmCrud.model.Role;
 import jmCrud.model.User;
 import jmCrud.service.*;
 
@@ -12,7 +13,7 @@ import java.io.IOException;
 @WebServlet("/add")
 public class AddUserServlet extends HttpServlet {
 
-    private UserService userService = new UserServiceImpl();
+    private ObjectService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,9 +31,10 @@ public class AddUserServlet extends HttpServlet {
                 0L,
                 req.getParameter("username"),
                 req.getParameter("login"),
-                req.getParameter("password")
+                req.getParameter("password"),
+                new Role()
         );
-        userService.add(currentUser);
+        userService.insert(currentUser);
 
         resp.sendRedirect(req.getContextPath());
     }

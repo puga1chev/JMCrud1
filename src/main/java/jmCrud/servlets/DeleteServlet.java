@@ -12,14 +12,14 @@ import java.io.IOException;
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
 
-    private UserService userService = new UserServiceImpl();
+    private ObjectService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String deleteUser = req.getParameter("id");
         if (deleteUser != null) {
-            userService.remove(Long.parseLong(deleteUser));
+            userService.delete(Long.parseLong(deleteUser));
         }
 
 //        req.setAttribute("action", req.getContextPath() + "/");

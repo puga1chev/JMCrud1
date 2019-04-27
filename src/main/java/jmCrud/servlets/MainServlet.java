@@ -12,12 +12,12 @@ import java.util.*;
 @WebServlet("/")
 public class MainServlet extends HttpServlet {
 
-    private UserService userService = new UserServiceImpl();
+    private ObjectService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<User> users = userService.getAll();
+        List<User> users = userService.getAll("id");
 
         req.setAttribute("users", users);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/index.jsp");

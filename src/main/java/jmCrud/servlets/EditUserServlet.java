@@ -1,5 +1,6 @@
 package jmCrud.servlets;
 
+import jmCrud.model.Role;
 import jmCrud.model.User;
 import jmCrud.service.*;
 
@@ -11,7 +12,7 @@ import java.io.IOException;
 @WebServlet("/edit")
 public class EditUserServlet extends HttpServlet {
 
-    private UserService userService = new UserServiceImpl();
+    private ObjectService<User> userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,10 +35,11 @@ public class EditUserServlet extends HttpServlet {
                 Long.parseLong(req.getParameter("user_id")),
                 req.getParameter("username"),
                 req.getParameter("login"),
-                req.getParameter("password")
+                req.getParameter("password"),
+                new Role()
         );
 
-        userService.edit(newUser);
+        userService.update(newUser);
         resp.sendRedirect(req.getContextPath());
     }
 
