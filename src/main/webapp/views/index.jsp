@@ -7,45 +7,27 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Список пользователей</title>
+    <title>Вход в систему</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 
-<%--<c:if test = "${exception != null}">
-    <c:forEach items="${exception}" var="element">
-        <c:out value="${element}" />
-    </c:forEach>
-</c:if>--%>
+<h2><c:out value="${error}"/></h2>
 
-<table class="table">
-    <thead class="thead-light">
-    <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Имя пользователя</th>
-        <th scope="col">Логин</th>
-        <th scope="col">Редактирование</th>
-        <th scope="col">Удаление</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${users}" var="user">
-    <tr>
-        <th><c:out value="${user.getId()}"/>
-        </th>
-        <th><c:out value="${user.getUsername()}"/>
-        </th>
-        <th><c:out value="${user.getLogin()}"/>
-        </th>
-        <th><a href="edit?id=<c:out value="${user.getId()}"/>">Редакт.</a></th>
-        <th><a href="delete?id=<c:out value="${user.getId()}"/>">Удалить</a></th>
-    </tr>
-    </c:forEach>
+<form action="<c:out value="${action}"/>" method="post">
 
-    </tbody>
-</table>
-<a class="btn btn-primary" href="add">Добавить</a>
+    <div class="form-group">
+        <label for="login">Имя пользователя:</label>
+        <input type="text" class="form-control" id="login" name="login" value="">
+    </div>
+    <div class="form-group">
+        <label for="password">Пароль:</label>
+        <input type="password" class="form-control" id="password" name="password" value="">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Продолжить</button>
+</form>
 
 </body>
 </html>

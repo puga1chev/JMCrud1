@@ -13,6 +13,7 @@ import java.io.IOException;
 public class EditUserServlet extends HttpServlet {
 
     private ObjectService<User> userService = new UserServiceImpl();
+    private ObjectService<Role> roleService = new RoleServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,7 +24,7 @@ public class EditUserServlet extends HttpServlet {
         req.setAttribute("action", req.getContextPath() + "/edit");
         req.setAttribute("user", user);
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/user_manage.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/user_add.jsp");
         requestDispatcher.forward(req, resp);
     }
 
@@ -31,24 +32,29 @@ public class EditUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
+
+        EditRole(req);
+        resp.sendRedirect(req.getContextPath() + "/admin");
+    }
+
+    private void EditRole(HttpServletRequest req) {
+        Role role = getRole(req);
         User newUser = new User(
                 Long.parseLong(req.getParameter("user_id")),
                 req.getParameter("username"),
                 req.getParameter("login"),
                 req.getParameter("password"),
-                new Role()
+                role
         );
-
         userService.update(newUser);
-        resp.sendRedirect(req.getContextPath());
     }
 
-/*    private String[] parsePath(String path) {
-
-        if (path == null || path.isEmpty()) {
-            return null;
+    private Role getRole(HttpServletRequest req) {
+        Role role = roleService.getByField("rolename", req.getParameter("role"));
+        if (role == null) {
+            role = new Role(0L, req.getParameter("role"));
+            roleService.insert(role);
         }
-        String[] array = path.split("/");
-        return array;
-    }*/
+        return role;
+    }
 }

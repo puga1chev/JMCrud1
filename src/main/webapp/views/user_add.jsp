@@ -22,12 +22,16 @@
         <input type="text" class="form-control" id="username" name="username" value="<c:out value="${user.getUsername()}"/>">
     </div>
     <div class="form-group">
-        <label for="login">Имя пользователя:</label>
+        <label for="login">Логин:</label>
         <input type="text" class="form-control" id="login" name="login" value="<c:out value="${user.getLogin()}"/>">
     </div>
     <div class="form-group">
         <label for="password">Пароль:</label>
-        <input type="password" class="form-control" id="password" name="password" value="">
+        <input type="password" class="form-control" id="password" name="password" value="<c:out value="${user.getPass()}"/>">
+    </div>
+    <div class="form-group">
+        <label for="role">Роль:</label>
+        <input type="text" class="form-control" id="role" name="role" value="<c:out value="${user.getRole().getRolename()}"/>">
     </div>
 
     <button type="submit" class="btn btn-primary">Готово</button>

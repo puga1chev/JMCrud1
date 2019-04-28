@@ -9,8 +9,8 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.*;
 
-@WebServlet("/")
-public class MainServlet extends HttpServlet {
+@WebServlet("/admin")
+public class ListUsersServlet extends HttpServlet {
 
     private ObjectService userService = new UserServiceImpl();
 
@@ -20,7 +20,7 @@ public class MainServlet extends HttpServlet {
         List<User> users = userService.getAll("id");
 
         req.setAttribute("users", users);
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/index.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/users_view.jsp");
         requestDispatcher.forward(req, resp);
     }
 }

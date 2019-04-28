@@ -1,6 +1,5 @@
 package jmCrud.servlets;
 
-import jmCrud.service.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,19 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/delete")
-public class DeleteServlet extends HttpServlet {
-
-    private ObjectService userService = new UserServiceImpl();
-
+@WebServlet("/user")
+public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String deleteUser = req.getParameter("id");
-        if (deleteUser != null) {
-            userService.delete(Long.parseLong(deleteUser));
-        }
-
-        resp.sendRedirect(req.getContextPath() + "/admin");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/user.jsp");
+        requestDispatcher.forward(req, resp);
     }
 }
