@@ -1,4 +1,4 @@
-package jmCrud.servlets;
+package jmCrud.servlet;
 
 import jmCrud.model.*;
 import jmCrud.service.*;
@@ -30,16 +30,8 @@ public class AutentificationServlet extends HttpServlet {
         HttpSession session = req.getSession(true);
         if (user != null && user.getLogin().equals(login) && user.getPass().equals(password)) {
 
-            session.setAttribute("role", user.getRole().getRolename());
-
-            if (user.getRole().getRolename().equals("Администратор")) {
-                resp.sendRedirect(req.getContextPath() + "/admin");
-            } else if (user.getRole().getRolename().equals("Пользователь")) {
-                resp.sendRedirect(req.getContextPath() + "/user");
-            }
-            else {
-                // todo бросить исключение
-            }
+            session.setAttribute("user", user);
+            resp.sendRedirect(req.getContextPath() + "/auth");
         }
         else {
             resp.sendRedirect(req.getContextPath() + "/");

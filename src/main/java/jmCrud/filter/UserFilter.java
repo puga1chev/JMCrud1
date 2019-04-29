@@ -1,12 +1,14 @@
-package jmCrud.filters;
+package jmCrud.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/*")
-public class AdminFilter implements Filter {
+@WebFilter("/user")
+public class UserFilter implements Filter {
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -19,22 +21,11 @@ public class AdminFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
         String servletPath = req.getServletPath();
-        if (servletPath.equals("/admin") ||
-                servletPath.equals("/add") ||
-                servletPath.equals("/delete") ||
-                servletPath.equals("/edit")
-        ) {
-            if (!RoleManagment.AdminAccesss(req, resp)) {
-                return;
-            }
-        } else if (servletPath.equals("/user")) {
+        if (servletPath.startsWith("/user")) {
             if (!RoleManagment.UserAccesss(req, resp)) {
                 return;
             }
         }
-
         filterChain.doFilter(req, resp);
     }
-
-
 }

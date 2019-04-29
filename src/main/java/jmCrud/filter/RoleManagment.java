@@ -1,4 +1,4 @@
-package jmCrud.filters;
+package jmCrud.filter;
 
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.IOException;
 public class RoleManagment {
 
     public static boolean AdminAccesss(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String role = getSessionRole(req);
+        String role = FilterHelper.getSessionRoleName(req);
         if (role == null) {
             //todo log
             redirectToStart(req, resp);
@@ -25,7 +25,7 @@ public class RoleManagment {
     }
 
     public static boolean UserAccesss(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String role = getSessionRole(req);
+        String role = FilterHelper.getSessionRoleName(req);
         if (role == null) {
             //todo log
             redirectToStart(req, resp);
@@ -36,9 +36,5 @@ public class RoleManagment {
         redirectToStart(req, resp);
         return false;
     }
-//todo кнопка выход из пользователя
-    private static String getSessionRole(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        return (String) session.getAttribute("role");
-    }
+
 }

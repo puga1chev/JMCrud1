@@ -13,8 +13,6 @@ public class Role {
     private Long id;
     @Column(name = "rolename", unique = true, updatable = true)
     private String rolename;
-    @OneToMany(mappedBy = "role")
-    private Set<User> users = new HashSet<>();
 
     public Role(Long id, String rolename) {
         this.id = id;

@@ -1,4 +1,4 @@
-package jmCrud.servlets;
+package jmCrud.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,4 +1,4 @@
-package jmCrud.servlets;
+package jmCrud.servlet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

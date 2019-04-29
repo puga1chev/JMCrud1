@@ -1,4 +1,4 @@
-package jmCrud.servlets;
+package jmCrud.servlet;
 
 import jmCrud.model.User;
 import jmCrud.service.*;

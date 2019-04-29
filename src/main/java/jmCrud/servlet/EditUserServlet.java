@@ -1,17 +1,15 @@
-package jmCrud.servlets;
+package jmCrud.servlet;
 
-import jmCrud.model.Role;
-import jmCrud.model.User;
+import jmCrud.model.*;
 import jmCrud.service.*;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/add")
-public class AddUserServlet extends HttpServlet {
+@WebServlet("/admin/edit")
+public class EditUserServlet extends HttpServlet {
 
     private ObjectService<User> userService = new UserServiceImpl();
     private ObjectService<Role> roleService = new RoleServiceImpl();
@@ -19,8 +17,13 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.setAttribute("action", req.getContextPath() + "/add");
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/user_add.jsp");
+        String user_id = req.getParameter("id");
+        User user = userService.getById(Long.parseLong(user_id));
+
+        req.setAttribute("action", req.getContextPath() + "/admin/edit");
+        req.setAttribute("user", user);
+
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("../views/user_add.jsp");
         requestDispatcher.forward(req, resp);
     }
 
@@ -28,21 +31,21 @@ public class AddUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
-        addUser(req);
 
+        EditRole(req);
         resp.sendRedirect(req.getContextPath() + "/admin");
     }
 
-    private void addUser(HttpServletRequest req) {
+    private void EditRole(HttpServletRequest req) {
         Role role = getRole(req);
-        User currentUser = new User(
-                0L,
+        User newUser = new User(
+                Long.parseLong(req.getParameter("user_id")),
                 req.getParameter("username"),
                 req.getParameter("login"),
                 req.getParameter("password"),
                 role
         );
-        userService.insert(currentUser);
+        userService.update(newUser);
     }
 
     private Role getRole(HttpServletRequest req) {

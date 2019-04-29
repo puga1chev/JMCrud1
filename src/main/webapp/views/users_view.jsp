@@ -35,14 +35,14 @@
         </th>
         <th><c:out value="${user.getRole().getRolename()}"/>
         </th>
-        <th><a href="edit?id=<c:out value="${user.getId()}"/>">Редакт.</a></th>
-        <th><a href="delete?id=<c:out value="${user.getId()}"/>">Удалить</a></th>
+        <th><a href="admin/edit?id=<c:out value="${user.getId()}"/>">Редакт.</a></th>
+        <th><a href="admin/delete?id=<c:out value="${user.getId()}"/>">Удалить</a></th>
     </tr>
     </c:forEach>
 
     </tbody>
 </table>
-<a class="btn btn-primary" href="add">Добавить</a>
+<a class="btn btn-primary" href="admin/add">Добавить</a>
 <a class="btn btn-primary" href="logout">Выйти</a>
 <a class="btn btn-primary" href="user">Пользователь</a>
 </body>

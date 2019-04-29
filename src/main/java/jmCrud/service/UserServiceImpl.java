@@ -6,7 +6,7 @@ import java.util.*;
 
 public class UserServiceImpl implements ObjectService<User> {
 
-    private DaoAbstractFactory factory = DaoFactoryHelper.getInstance().getFactory();
+    private DaoAbstractFactory factory = DaoAbstractFactory.getFactory();
     private BaseDaoOperations<User> dao = factory.getUsersDao();
 
     @Override
