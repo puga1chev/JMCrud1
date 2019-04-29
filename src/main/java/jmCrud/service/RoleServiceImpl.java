@@ -6,7 +6,7 @@ import java.util.*;
 
 public class RoleServiceImpl implements ObjectService<Role> {
 
-    private DaoAbstractFactory factory = DaoFactoryHelper.getInstance().getFactory();
+    private DaoAbstractFactory factory = DaoAbstractFactory.getFactory();
     private BaseDaoOperations<Role> dao = factory.getRoleDao();
 
     @Override
